@@ -190,6 +190,10 @@ function broadcastReload() {
   } catch {
     // ignore storage errors
   }
+
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify({ type: 'reload' }));
+  }
 }
 
 function listenForReload() {
@@ -198,6 +202,39 @@ function listenForReload() {
       loadFeed();
     }
   });
+}
+
+let ws = null;
+
+function initSyncSocket() {
+  try {
+    ws = new WebSocket('ws://localhost:3001');
+
+    ws.addEventListener('open', () => {
+      // ready
+    });
+
+    ws.addEventListener('message', (event) => {
+      try {
+        const payload = JSON.parse(event.data);
+        if (payload?.type === 'reload') {
+          loadFeed();
+        }
+      } catch {
+        // ignore
+      }
+    });
+
+    ws.addEventListener('close', () => {
+      setTimeout(initSyncSocket, 2000);
+    });
+
+    ws.addEventListener('error', () => {
+      // ignore
+    });
+  } catch {
+    // ignore if WebSocket not supported
+  }
 }
 
 function initCompactMode() {
