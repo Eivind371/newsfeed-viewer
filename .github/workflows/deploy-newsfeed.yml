@@ -23,6 +23,5 @@ jobs:
           publish_branch: gh-pages
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
-          force: true
-          clean: true
+          force_orphan: true
           keep_files: false
