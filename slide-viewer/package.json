@@ -1,0 +1,22 @@
+{
+  "name": "slide-viewer",
+  "version": "1.0.0",
+  "description": "A web-based slide viewer for presentations",
+  "main": "index.html",
+  "homepage": "https://eivind371.github.io/slideviewer",
+  "scripts": {
+    "start": "live-server",
+    "dev": "live-server"
+  },
+  "keywords": [
+    "slide",
+    "viewer",
+    "presentation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  }
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="slide-container">
+            <div class="slide" id="slide">
+                <h1>Slide 1</h1>
+                <p>Welcome to the Slide Viewer</p>
+            </div>
+            <canvas id="pdfCanvas" style="display: none;"></canvas>
+        </div>
+        
+        <div class="controls">
+            <button id="prevBtn" class="btn btn-prev">← Previous</button>
+            <span class="slide-counter">
+                <span id="currentSlide">1</span> / <span id="totalSlides">1</span>
+            </span>
+            <button id="nextBtn" class="btn btn-next">Next →</button>
+            <button id="playBtn" class="btn btn-play" title="Start Slideshow">▶ Play</button>
+            <span class="timer" id="timer" style="display: none;">45s</span>
+            <button id="refreshBtn" class="btn btn-refresh" title="Refresh RSS Feed">⟳ Refresh</button>
+            <button id="fullscreenBtn" class="btn btn-fullscreen" title="Toggle Fullscreen">⛶</button>
+        </div>
+
+        <div class="upload-section">
+            <div class="feed-controls">
+                <label for="feedUrlInput" class="upload-label">RSS Feed URL:</label>
+                <input type="text" id="feedUrlInput" class="feed-url" placeholder="https://..." />
+                <button id="loadFeedBtn" class="btn btn-small" title="Load Feed">Load</button>
+            </div>
+            <div class="feed-controls">
+                <label for="refreshInterval" class="upload-label">Auto refresh:</label>
+                <select id="refreshInterval" class="refresh-interval">
+                    <option value="0">Off</option>
+                    <option value="5">Every 5 min</option>
+                    <option value="10">Every 10 min</option>
+                    <option value="30">Every 30 min</option>
+                </select>
+                <span id="autoRefreshInfo" class="auto-refresh-info"></span>
+            </div>
+
+            <label for="fileInput" class="upload-label">Upload Presentation or PDF:</label>
+            <input type="file" id="fileInput" accept=".pptx,.ppt,.odp,.pdf" />
+            <span class="file-info" id="fileInfo"></span>
+        </div>
+
+        <div class="story-index" id="storyIndex">
+            <div class="story-index-header">
+                <span>Stories</span>
+                <button id="toggleIndexBtn" class="btn btn-small" title="Show/Hide story list">Hide</button>
+            </div>
+            <ul class="story-list" id="storyList"></ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
