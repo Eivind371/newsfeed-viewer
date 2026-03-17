@@ -213,6 +213,8 @@ function initSyncSocket() {
     const url = (syncUrlEl?.value || 'ws://localhost:3001').trim();
     if (!url) return;
 
+    if (syncStatusEl) syncStatusEl.textContent = 'Sync: connecting...';
+
     if (ws && ws.url === url && ws.readyState !== WebSocket.CLOSED) {
       return; // already connected
     }
