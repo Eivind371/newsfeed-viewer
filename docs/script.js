@@ -9,6 +9,8 @@ const feedUrlEl = document.getElementById('feedUrl');
 const loadBtn = document.getElementById('loadBtn');
 const refreshIntervalEl = document.getElementById('refreshInterval');
 const compactBtn = document.getElementById('compactBtn');
+const syncUrlEl = document.getElementById('syncUrl');
+const syncStatusEl = document.getElementById('syncStatus');
 const statusEl = document.getElementById('status');
 const nextRefreshEl = document.getElementById('nextRefresh');
 const feedEl = document.getElementById('feed');
@@ -208,10 +210,21 @@ let ws = null;
 
 function initSyncSocket() {
   try {
-    ws = new WebSocket('ws://localhost:3001');
+    const url = (syncUrlEl?.value || 'ws://localhost:3001').trim();
+    if (!url) return;
+
+    if (ws && ws.url === url && ws.readyState !== WebSocket.CLOSED) {
+      return; // already connected
+    }
+
+    if (ws) {
+      ws.close();
+    }
+
+    ws = new WebSocket(url);
 
     ws.addEventListener('open', () => {
-      // ready
+      if (syncStatusEl) syncStatusEl.textContent = 'Sync: connected';
     });
 
     ws.addEventListener('message', (event) => {
@@ -226,11 +239,12 @@ function initSyncSocket() {
     });
 
     ws.addEventListener('close', () => {
+      if (syncStatusEl) syncStatusEl.textContent = 'Sync: disconnected';
       setTimeout(initSyncSocket, 2000);
     });
 
     ws.addEventListener('error', () => {
-      // ignore
+      if (syncStatusEl) syncStatusEl.textContent = 'Sync: failed';
     });
   } catch {
     // ignore if WebSocket not supported
@@ -260,5 +274,6 @@ refreshIntervalEl.addEventListener('change', (event) => {
 
 initCompactMode();
 listenForReload();
+initSyncSocket();
 loadFeed();
 scheduleAutoRefresh(Number(refreshIntervalEl.value));
