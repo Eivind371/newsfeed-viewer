@@ -182,6 +182,24 @@ function setCompactMode(enabled) {
   compactBtn.textContent = enabled ? 'Compact ✓' : 'Compact';
 }
 
+const SYNC_KEY = 'newsfeed_reload_signal';
+
+function broadcastReload() {
+  try {
+    localStorage.setItem(SYNC_KEY, Date.now().toString());
+  } catch {
+    // ignore storage errors
+  }
+}
+
+function listenForReload() {
+  window.addEventListener('storage', (event) => {
+    if (event.key === SYNC_KEY && event.newValue) {
+      loadFeed();
+    }
+  });
+}
+
 function initCompactMode() {
   const saved = localStorage.getItem('newsfeedCompactMode');
   const enabled = saved === '1';
@@ -195,11 +213,15 @@ function initCompactMode() {
 }
 
 // Boot
-loadBtn.addEventListener('click', loadFeed);
+loadBtn.addEventListener('click', () => {
+  loadFeed();
+  broadcastReload();
+});
 refreshIntervalEl.addEventListener('change', (event) => {
   scheduleAutoRefresh(Number(event.target.value));
 });
 
 initCompactMode();
+listenForReload();
 loadFeed();
 scheduleAutoRefresh(Number(refreshIntervalEl.value));
