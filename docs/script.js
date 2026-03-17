@@ -184,6 +184,24 @@ function setCompactMode(enabled) {
   compactBtn.textContent = enabled ? 'Compact ✓' : 'Compact';
 }
 
+function applyUrlConfig() {
+  const params = new URLSearchParams(window.location.search);
+  const sync = params.get('sync');
+  if (sync && syncUrlEl) {
+    syncUrlEl.value = sync;
+  }
+
+  const feed = params.get('feed');
+  if (feed && feedUrlEl) {
+    feedUrlEl.value = feed;
+  }
+
+  const refresh = params.get('refresh');
+  if (refresh && refreshIntervalEl) {
+    refreshIntervalEl.value = refresh;
+  }
+}
+
 const SYNC_KEY = 'newsfeed_reload_signal';
 
 function broadcastReload() {
@@ -209,6 +227,11 @@ function listenForReload() {
 let ws = null;
 
 function initSyncSocket() {
+  if (typeof WebSocket === 'undefined') {
+    if (syncStatusEl) syncStatusEl.textContent = 'Sync: unsupported';
+    return;
+  }
+
   try {
     const url = (syncUrlEl?.value || 'ws://localhost:3001').trim();
     if (!url) return;
@@ -274,6 +297,7 @@ refreshIntervalEl.addEventListener('change', (event) => {
   scheduleAutoRefresh(Number(event.target.value));
 });
 
+applyUrlConfig();
 initCompactMode();
 listenForReload();
 initSyncSocket();
