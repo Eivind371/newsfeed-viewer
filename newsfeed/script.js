@@ -99,6 +99,22 @@ function parseFeedXml(xmlText) {
   });
 }
 
+function formatPubDate(pubDate) {
+  if (!pubDate) return '';
+
+  const date = new Date(pubDate);
+  if (Number.isNaN(date.getTime())) return pubDate;
+
+  return date.toLocaleString('nb-NO', {
+    timeZone: 'Europe/Oslo',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
 function renderFeed(entries) {
   feedEl.innerHTML = '';
 
@@ -117,7 +133,7 @@ function renderFeed(entries) {
 
     const meta = document.createElement('div');
     meta.className = 'story__meta';
-    meta.innerHTML = `<span>${entry.pubDate}</span><span>${entry.link ? '↗' : ''}</span>`;
+    meta.innerHTML = `<span>${formatPubDate(entry.pubDate)} (CET)</span><span>${entry.link ? '↗' : ''}</span>`;
 
     const summary = document.createElement('div');
     summary.className = 'story__summary';
