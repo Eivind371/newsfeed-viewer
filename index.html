@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Newsfeed Viewer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="app__header">
+      <div class="header__left">
+        <h1 class="title">Newsfeed</h1>
+        <p class="subtitle">Live RSS reader (NRK Siste nyheter by default)</p>
+      </div>
+
+      <div class="header__controls">
+        <input id="feedUrl" class="input" type="text" value="https://www.nrk.no/nyheter/siste.rss" />
+        <button id="loadBtn" class="btn">Load</button>
+        <select id="refreshInterval" class="select">
+          <option value="0">Auto refresh off</option>
+          <option value="5">Refresh every 5m</option>
+          <option value="10" selected>Refresh every 10m</option>
+          <option value="30">Refresh every 30m</option>
+        </select>
+        <button id="compactBtn" class="btn btn-ghost" title="Toggle compact mode">Compact</button>
+      </div>
+      <div class="header__controls">
+        <input id="syncUrl" class="input" type="text" value="ws://10.69.139.171:3001" />
+        <span id="syncStatus" class="status" style="min-width: 130px;">Sync: disconnected</span>
+      </div>
+
+      <div class="header__info">
+        <span id="status" class="status"></span>
+        <span id="nextRefresh" class="next-refresh"></span>
+      </div>
+    </header>
+
+    <section class="feed" id="feed"></section>
+
+    <footer class="footer">
+      <span>Powered by browser RSS parsing · No borders · Full screen</span>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
