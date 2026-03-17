@@ -1,4 +1,4 @@
-const DEFAULT_FEED = 'https://www.nrk.no/toppsaker.rss';
+const DEFAULT_FEED = 'https://www.nrk.no/nyheter/siste.rss';
 const CORS_PROXIES = [
   'https://api.allorigins.win/raw?url=',
   'https://api.allorigins.cf/raw?url=',
@@ -128,6 +128,11 @@ function renderFeed(entries) {
   });
 }
 
+function cacheBustedUrl(url) {
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}_=${Date.now()}`;
+}
+
 async function loadFeed() {
   const url = (feedUrlEl.value || DEFAULT_FEED).trim();
   if (!url) {
@@ -139,7 +144,7 @@ async function loadFeed() {
   loadBtn.disabled = true;
 
   try {
-    const resp = await fetchWithCorsFallback(url);
+    const resp = await fetchWithCorsFallback(cacheBustedUrl(url));
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
 
     const text = await resp.text();
