@@ -17,7 +17,16 @@ npm install
 npm start
 ```
 
+If you want other devices on the same network to connect, start the server bound to all interfaces and use the host machine's IP address in the client:
+
+```bash
+HOST=0.0.0.0 npm start
+```
+
+Then set the client sync URL to something like `ws://192.168.1.5:3001` (replace with your machine's IP).
+
 ## Notes
 
-- Works best when all clients are on the same machine/network and can reach `localhost:3001`.
-- If you want to share across devices, you can run this server on a machine with a reachable IP and change the client URL accordingly.
+- Works best when all clients are on the same machine/network and can reach the sync server host.
+- When running on the same machine as the client, `ws://localhost:3001` is fine.
+- If you want to share across devices, ensure your firewall allows incoming connections on port 3001 and use the host machine's IP address.

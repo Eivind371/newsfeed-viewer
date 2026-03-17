@@ -1,9 +1,10 @@
 const WebSocket = require('ws');
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
+const HOST = process.env.HOST || '0.0.0.0';
 
-const wss = new WebSocket.Server({ port: PORT });
-console.log(`Sync server running on ws://localhost:${PORT}`);
+const wss = new WebSocket.Server({ port: PORT, host: HOST });
+console.log(`Sync server running on ws://${HOST}:${PORT} (use your machine IP to connect from other devices)`);
 
 wss.on('connection', (ws) => {
   ws.on('message', (message) => {
